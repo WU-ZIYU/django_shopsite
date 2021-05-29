@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<script src="https://kit.fontawesome.com/2a09f2e35b.js" crossorigin="anonymous"></script>
+<section class="padding-y-sm">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <main class="card">
+                    <div class="row no-gutters">
+                        <aside class="col-sm-6 border-right">
+                            <article class="gallery-wrap">
+                                <div class="img-big-wrap">
+                                    <div><a href="{{ product.image.url }}" data-fancybox=""><img style="width: 100%" src="{{ product.image.url }}"></a> </div>
+                                </div> <!-- slider-product.// -->
+                            </article>  <!-- gallery-wrap .end// -->
+                        </aside>
+                        <aside class="col-sm-6">
+                            <article class="card-body">
+                                <form action="/api/cartlines/" method="post">
+                                    {% csrf_token %}
+                                    <!-- 访问商品模型的分类的属性 -->
+                                    <!-- short-info-wrap -->
+                                    <h3 class="title mb-3">
+                                        {{ product.name }} - {{ product.category.name }}
+                                    </h3>
+
+                                    <div id="product_price" class="price-detail-wrap" data-product-id="{{ product.id }}">
+                                        <var class="price h3 text-warning">
+                                            <span class="num">
+                                                {{ product.price }}
+                                            </span>
+                                        </var>
+                                        <dl class="dlist-inline">
+                                            <dt>
+                                                Product Variants
+                                            </dt>
+                                            <dd>
+                                                <!-- 访问商品模型的商品变种， .all 返回所有结果 -->
+                                                {% for product_variant in product.variants.all %}
+                                                <label class="form-check form-check-inline">
+                                                    <input class="form-check-input" name="product_variant" value="{{ product_variant.id }}" type="radio"/>
+                                                    <span class="form-check-label">
+                                                        {{ product_variant.name }}
+                                                    </span>
+                                                </label>
+                                                {% endfor %}
+                                            </dd>
+                                        </dl>   <!-- item-property .// -->
+                                    </div>   <!-- price-detail-wrap .// -->
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <dl class="dlist-inline">
+                                                <dt>{% trans "Quantity" %}</dt>
+                                                <dd>
+                                                    <input type="number" name="quantity" class="form-control"/>
+                                                </dd>
+                                            </dl>   <!-- item-property .// -->
+                                        </div>   <!-- col.// -->
+                                    </div>   <!-- row.// -->
+                                    <button class="btn btn-warning" type="submit"><i class="fa fa-cart-plus"></i>{% trans "Add to Cart" %}</button>
+                                </form>
+                            </article>  <!-- card-body.// -->
+                        </aside>  <!-- col.// -->
+                    </div>   <!-- row.// -->
+                </main>   <!-- card.// -->
+
+                <!-- PRODUCT DETAIL -->
+                <article class="card mt-3">
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-3">
+                                {% trans "Category" %}
+                            </dt>
+                            <dd class="col-sm-9">
+                                {{ product.category.name }}
+                            </dd>
+                            {% for attribute in attributes %}
+                            <dt class="col-sm-3">
+                                {{ attribute.name }}
+                            </dt>
+                            <dd class="col-sm-9">
+                                {% for attribute_value in product.attribute_values.all %}
+                                    {% if attribute_value.attribute == attribute %}
+                                        {{ attribute_value.value }}
+                                    {% endif %}
+                                {% endfor %}
+                            </dd>
+                            {% endfor %}
+                        </dl>
+
+                        <h4>
+                            {% trans "Description" %}
+                        </h4>
+                        <p>
+                            {{ product.description }}
+                        </p>
+                    </div>    <!-- card-body.// -->
+                </article>  <!-- card.// -->
+
+                <!-- PRODUCT DETAIL .// -->
+
+            </div>     <!-- col // -->
+        </div>  <!-- row.// -->
+    </div>   <!-- container // -->
+</section>
+{% endblock %}

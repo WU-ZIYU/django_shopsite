@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+    {% trans "Carts" %}
+{%endblock %}
+{% block content %}
+<div class="container">
+  <h4>{% trans "Shipping Address" %}</h4>
+  <!-- 迭代用户的地址 -->
+  {% for address in request.user.addresses.all %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <label>
+        <input type="radio" name="shipping_address" />
+        <address>
+          <strong>{{ address.name }} {{ address.phone }}</strong>
+          <p>
+            {{ address.country }} {{ address.city_area }} {{ address.city }}
+              {{ address.street_address }}
+          </p>
+        </address>
+      </label>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="row" id="shopping_cart">fuck</div>
+</div>
+{% endblock %}

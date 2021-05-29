@@ -1,0 +1,4 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+/* 导入 Font Awesome 的其中一种 Icon */
+@import "~@fortawesome/fontawesome-free/css/fontawesome.min.css";
+@import "~@fortawesome/fontawesome-free/css/solid.min.css";
